@@ -1,0 +1,53 @@
+package neu.edu.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.Method;
+
+public abstract  class BaseServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+       req.setCharacterEncoding("UTF-8");
+        String action=req.getParameter("action");
+        System.out.println(action);
+        //System.out.println(req.getCharacterEncoding());
+
+        Method method= null;
+        try {
+            method = this.getClass().getDeclaredMethod(action, HttpServletRequest.class, HttpServletResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            method.invoke(this,req,resp);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action=req.getParameter("action");
+        System.out.println(action);
+        Method method= null;
+        try {
+            method = this.getClass().getDeclaredMethod(action, HttpServletRequest.class, HttpServletResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            method.invoke(this,req,resp);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
